@@ -17,11 +17,12 @@ private JToggleButton elpa;
 private SingUp() {
 	setLayout(null);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-	
+
+
 		
 	
 	text_nombre = new JTextField("Nombre");
-	text_nombre.setBounds(65,40,170,30);
+	text_nombre.setBounds(65,40,180,30);
 	text_nombre.setForeground(Color.gray);
 	text_nombre.setFont(new Font("Courier New", 1, 14));
 	text_nombre.addFocusListener(new FocusListener() {
@@ -45,7 +46,7 @@ private SingUp() {
 	
 	
 	text_nombreUsurio = new JTextField("Usuario");
-	text_nombreUsurio.setBounds(65,90,170,30);
+	text_nombreUsurio.setBounds(65,90,180,30);
 	text_nombreUsurio.setForeground(Color.gray);
 	text_nombreUsurio.setFont(new Font("Courier New", 1, 14));
 	text_nombreUsurio.addFocusListener(new FocusListener() {
@@ -73,7 +74,7 @@ private SingUp() {
 	
 	
 	text_apellido = new JTextField("Apellido");
-	text_apellido.setBounds(65,140,170,30);
+	text_apellido.setBounds(65,140,180,30);
 	text_apellido.setForeground(Color.gray);
 	text_apellido.setFont(new Font("Courier New", 1, 14));
 	text_apellido.addFocusListener(new FocusListener() {
@@ -103,7 +104,7 @@ private SingUp() {
 	
 	
 	text_correo = new JTextField("Correo");
-	text_correo.setBounds(65,190,170,30);
+	text_correo.setBounds(65,190,180,30);
 	text_correo.setForeground(Color.gray);
 	text_correo.setFont(new Font("Courier New", 1, 14));
 	text_correo.addFocusListener(new FocusListener() {
@@ -133,7 +134,7 @@ private SingUp() {
 	
 	
 	text_telefono = new JTextField("Telefono");
-	text_telefono.setBounds(65,240,170,30);
+	text_telefono.setBounds(65,240,180,30);
 	text_telefono.setForeground(Color.gray);
 	text_telefono.setFont(new Font("Courier New", 1, 14));
 	text_telefono.addFocusListener(new FocusListener() {
@@ -160,47 +161,94 @@ private SingUp() {
 	
 	
 	
-	password = new JLabel("Contraseña");
+	/*password = new JLabel("");
 	password.setBounds(69,290,100,30);
     password.setForeground(Color.gray);
 	password.setFont(new Font("Courier New", 1, 14));
     String pas  = password.getText();
-	add(password);
+	//add(password);*/
 	
-	text_password = new JPasswordField();
-	text_password.setBounds(65,290,170,30);
+	text_password = new JPasswordField("Contraseña");
+	text_password.setBounds(65,290,180,30);
 	text_password.setForeground(Color.gray);
-	char[] arrayC =  text_password.getPassword();
+	text_password.setFont(new Font("Courier New", 1, 14));
+    text_password.setEchoChar((char)0); 
+	char[] arrayC =  text_password.getPassword(); 
 	String pass = new String(arrayC);
 	text_password.addFocusListener(new FocusListener() {
 	    @Override
 	    public void focusGained(FocusEvent e) {
-	    	if(pas.equals("Contraseña"))
-	         password.setText("");
-	    	text_password.setForeground(Color.black);
+	        String password = String.valueOf(text_password.getPassword());
+	        if(password.equals("Contraseña"))
+	        {
+	        	text_password.setText("");
+		    	text_password.setEchoChar(('*'));
+	        	text_password.setForeground(Color.black);
+	        }
 	        
 	    }
 
 		@Override
 		public void focusLost(FocusEvent e) {
 
-	        if (pas.equals("")) {
-	        		
-	        	
-	        	password.setForeground(Color.GRAY);
-	        	password.setText("Contraseña");
-	        	
-
-
-	        }
+		    String password = String.valueOf(text_password.getPassword());
+		    
+		    
+		   //if(password.toLowerCase().equals("Contraseña") || password.toLowerCase().equals("") )
+		    if(password.isEmpty())
+		    {
+		    	text_password.setForeground(Color.GRAY);
+		    	text_password.setText("Contraseña");
+		        text_password.setEchoChar((char)0);
+		    	text_password.setForeground(new Color(153, 153, 153));
+		    }
+	        
 			
 		}});
 	add(text_password);
 	
 
 	
-	text_confirmPassword = new JPasswordField();
-	text_confirmPassword.setBounds(65,340,170,30);
+	
+	
+	
+	
+	
+	text_confirmPassword = new JPasswordField("Confirmar Contraseña");
+	text_confirmPassword.setBounds(65,340,180,30);
+	text_confirmPassword.setForeground(Color.gray);
+	text_confirmPassword.setFont(new Font("Courier New", 1, 14));
+	text_confirmPassword.setEchoChar((char)0);
+	text_confirmPassword.addFocusListener(new FocusListener() {
+	    @Override
+	    public void focusGained(FocusEvent e) {
+	        String password = String.valueOf(text_confirmPassword.getPassword());
+	        if(password.equals("Confirmar Contraseña"))
+	        {
+	        	text_confirmPassword.setText("");
+	        	text_confirmPassword.setEchoChar(('*'));
+		    	text_confirmPassword.setForeground(Color.black);
+	        }
+	        
+	    }
+
+		@Override
+		public void focusLost(FocusEvent e) {
+
+		    String password = String.valueOf(text_confirmPassword.getPassword());
+		    
+		    
+		   //if(password.toLowerCase().equals("Contraseña") || password.toLowerCase().equals("") )
+		    if(password.isEmpty())
+		    {
+		    	text_confirmPassword.setForeground(Color.GRAY);
+		    	text_confirmPassword.setText("Confirmar Contraseña");
+		    	text_confirmPassword.setEchoChar((char)0);
+		        text_confirmPassword.setForeground(new Color(153, 153, 153));
+		    }
+	        
+			
+		}});
 	add(text_confirmPassword);
 
 	
@@ -210,56 +258,160 @@ private SingUp() {
 	
 	
 	
+	
+	
+	
+	
 	elpa = new JToggleButton("Sing Up");
-	elpa.setBounds(100,400, 100,35);
+	elpa.setBounds(100,400, 100,40);
  
 	elpa.addActionListener(this);
+	elpa.addMouseListener(new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			elpa.setSize(130,50);
+			elpa.setLocation(86,400);
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			elpa.setSize(100,40);
+			elpa.setLocation(100,400);
+			
+		}
+		
+	});
 	add(elpa);
 	
 	
-	back = new JToggleButton("Regresar");
-	back.setBounds(0,0, 75,35);
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	back = new JToggleButton("Back");
+	back.setBounds(0,0, 80,35);
 	back.addActionListener(this);
+	back.addMouseListener(new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			// TODO Auto-generated method stub
+			back.setSize(90,40);
+			back.setLocation(0,0);
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			back.setSize(80,35);
+			back.setLocation(0,0);
+			
+		}
+		
+	});
 	add(back);
 	
 }
 
 public void actionPerformed(ActionEvent e) {
-	char[] arrayC =  text_password.getPassword();
-	String pass = new String(arrayC);
+
 	
-	char[] arrayr =  text_confirmPassword.getPassword();
-	String pass2 = new String(arrayr);
-	
+    String password = String.valueOf(text_password.getPassword());
+    String pass2 = String.valueOf(text_confirmPassword.getPassword());
+
+
 	String usuario1 =  text_nombreUsurio.getText().trim();
 	String nombre1 = text_nombre.getText().trim();
 	String apellido1 = text_apellido.getText().trim();
 	String telefono1 = text_telefono.getText().trim();
 	String correo1 = text_correo.getText().trim();
+
+boolean verificar=false;
+	for(int i =0;i<password.length();i++) {
+		for(int j=0;j<pass2.length();j++) {
+			if(password.charAt(i)==pass2.charAt(j)) {
+				verificar=true;
+			}
+		}
+			
+	}
+
+
+	
 	if(e.getSource() == elpa) {
-		if(usuario1.equals("")) {
-			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Nombre Usuario\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-		}else if(nombre1.equals("")) {
+		if(nombre1.equals("Usuario")) {
+			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Usuario\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+		}else if(usuario1.equals("Nombre")) {
 			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Nombre\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-		}else if(apellido1.equals("")) {
+		}else if(apellido1.equals("Apellido")) {
 			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Apellido\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		}else if(telefono1.equals("")) {
+		}else if(correo1.equals("Telefono")) {
 			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Telefono\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		}else if(pass.equals("")) {
+		}else if(telefono1.equals("Contraseña")) {
 			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		}else if(correo1.equals("")) {
+		}else if(password.equals("Correo")) {
 			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Correo\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		}else if(pass2.equals("")) {
+		}else if(pass2.equals("Confirmar Contraseña")) {
 			JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Confirmar contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		}else if((nombre1.equals(""))&&(apellido1.equals(""))&&(telefono1.equals(""))&&(pass.equals(""))&&(correo1.equals(""))&&(pass2.equals(""))) {
+		}else if((nombre1.equals("Nombre"))&&(apellido1.equals("Apellido"))&&(telefono1.equals("Telefono"))&&(password.equals("Contraseña"))&&(correo1.equals("Correo"))&&(pass2.equals("Confirmar Contraseña"))) {
 			JOptionPane.showMessageDialog(null,"¡Favor completar todos los campos!","INFO",JOptionPane.INFORMATION_MESSAGE);
 		}
+	      		
 		else {
+
+			if((password.equals(pass2))) {
+			
 		try {
 		Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
 		PreparedStatement pst = cn.prepareStatement("insert into Registro values(?,?,?,?,?,?,?)");
@@ -269,7 +421,7 @@ public void actionPerformed(ActionEvent e) {
 		pst.setString(3,text_nombre.getText().trim());
 		pst.setString(4,text_apellido.getText().trim());
 		pst.setString(5,text_telefono.getText().trim());
-		pst.setString(6,pass.trim());
+		pst.setString(6,password.trim());
 		pst.setString(7,text_correo.getText().trim());
 		pst.executeUpdate();
 		
@@ -277,8 +429,13 @@ public void actionPerformed(ActionEvent e) {
 		}catch(Exception e1) {
 			JOptionPane.showMessageDialog(null,"Error al registrar","INFO",JOptionPane.INFORMATION_MESSAGE);
 		}
+			
 		}
-		
+			else{
+				JOptionPane.showMessageDialog(null,"Al parecer las Contraseñas no coinciden ","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+			}
+		}
 		
 	}
 	if(e.getSource() == back) {
