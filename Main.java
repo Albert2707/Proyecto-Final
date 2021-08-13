@@ -10,7 +10,7 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-public class Main extends JFrame{
+public class Main extends JFrame implements MouseListener{
     private static Principal instance;
 
     private JScrollPane scroll;
@@ -25,13 +25,27 @@ public class Main extends JFrame{
       setLayout(null);
       setDefaultCloseOperation(EXIT_ON_CLOSE);
       Botones();
-      mostrar();
+      mostrar("");
       TextFields();
       Labels();
 
 
 }
 protected void Botones() {
+	
+	BotonCerrar = new JToggleButton();
+	BotonCerrar.setBounds(490,250,170,100);
+	BotonCerrar.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			mostrar("");
+		}
+		
+	});
+	add(BotonCerrar);
+	
 
     botonModificar = new JToggleButton("MODIFICAR");
     botonModificar.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -72,19 +86,19 @@ public void modificar() {
 
         try {
 
-            String ID = txtID.getText().trim();
-            Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+	    	String ID = txtID.getText().trim();
+	    	Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
 
-            PreparedStatement pasar=conectar.prepareStatement("Update Registro set NombreUsuario=?, Nombre=?,Apellido=?,Telefono=?,Contraseña=?,Correo=? where ID= " + ID);
-            pasar.setString(1, txtnombreUsuario.getText().trim());
-            pasar.setString(2, txtnombre.getText().trim());
-            pasar.setString(3, txtapellido.getText().trim());
-            pasar.setString(4, txttelefono.getText().trim());
-            pasar.setString(5, txtpassword.getText().trim());
-            pasar.setString(6, txtcorreo.getText().trim());
+	        PreparedStatement pasar=conectar.prepareStatement("Update Registro set NombreUsuario=?, Nombre=?,Apellido=?,Telefono=?,Contraseña=?,Correo=? where ID= " + ID);
+	        pasar.setString(1, txtnombreUsuario.getText().trim());
+	        pasar.setString(2, txtnombre.getText().trim());
+	        pasar.setString(3, txtapellido.getText().trim());
+	        pasar.setString(4, txttelefono.getText().trim());
+	        pasar.setString(5, txtpassword.getText().trim());
+	        pasar.setString(6, txtcorreo.getText().trim());
 
-            pasar.executeUpdate();
-            mostrar();
+	        pasar.executeUpdate();
+            mostrar("");
             limpiarCampos();
             
         } catch (SQLException ex) {
@@ -98,11 +112,12 @@ public void eliminar() {
 
 try {
 
-    String ID = txtID.getText().trim();
-    Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
-    PreparedStatement pasar=conectar.prepareStatement(" delete from Registro where ID= " + ID);
-        pasar.executeUpdate();   
-        mostrar();
+	String ID = txtID.getText().trim();
+	Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+
+    PreparedStatement pasar=conectar.prepareStatement("	delete from Registro where ID= " + ID);
+        pasar.executeUpdate();
+        mostrar("");
         limpiarCampos();
 
 } catch (Exception e2) {
@@ -114,17 +129,16 @@ try {
 
 
 
-protected void mostrar() {
-try {
-
-
-   Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+protected void mostrar(String Nombre) {
+    DefaultTableModel modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int row, int column) {
+            //all cells false
+            return false;
+         }
+    };
 
     
-    DefaultTableModel modelo = new DefaultTableModel();
-
-    
-    tabla = new JTable(modelo);
+    tabla = new JTable();
     tabla.setGridColor(Color.MAGENTA);
     scroll = new JScrollPane(tabla);
     scroll.setBounds(0,30,750,200);
@@ -137,27 +151,38 @@ try {
     modelo.addColumn("Telefono");
     modelo.addColumn("Contraseña");
     modelo.addColumn("Correo");
+tabla.setModel(modelo);
+try {
+
+
+   Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+
     
-    Statement  set = cn.createStatement();
-    ResultSet resultado = set.executeQuery("select * from Registro");
 
+   PreparedStatement set = cn.prepareStatement("select * from Registro"); 
+    ResultSet r=set.executeQuery();
+    String fila[]=new String[7];
+    while(r.next()){
+    fila[0]=r.getString("ID");
+    fila[1]=r.getString("NombreUsuario");
+    fila[2]=r.getString("Nombre");
+    fila[3]=r.getString("Apellido");
+    fila[4]=r.getString("Telefono");
+    fila[5]=r.getString("Contraseña");
+    fila[6]=r.getString("Correo");
 
-while(resultado.next()) {
-    Object [] fila = new Object[7];
-    for(int i = 0;i<7;i++) {
-        fila[i] = resultado.getObject( i + 1);
-    }
     modelo.addRow(fila);
-}
+    }
+tabla.setModel(modelo);
 cn.close();
-
 }
+
 
 
 catch(SQLException e) {
     JOptionPane.showMessageDialog(null,"Error al mostrar los datos","INFO",JOptionPane.INFORMATION_MESSAGE);
 }
-tabla.addMouseListener(new MouseAdapter() {
+/*tabla.addMouseListener(new MouseAdapter() {
     @Override
     public void mouseClicked(MouseEvent e) {
     int fila = tabla.rowAtPoint(e.getPoint());
@@ -171,19 +196,36 @@ tabla.addMouseListener(new MouseAdapter() {
            txtpassword.setText(tabla.getValueAt(fila,5).toString());
            txtcorreo.setText(tabla.getValueAt(fila,6).toString());
     }
+
     }
-});
+});*/
 }
 
+public void mouseClicked(MouseEvent e) {
+   
+    int fila = tabla.rowAtPoint(e.getPoint());
+    
+    if(fila >-1) {
+    	mostrar("");
+        txtID.setText(tabla.getValueAt(fila,0).toString());
+        txtnombreUsuario.setText(tabla.getValueAt(fila,1).toString());
+         txtnombre.setText(tabla.getValueAt(fila,2).toString());
+          txtapellido.setText(tabla.getValueAt(fila,3).toString());
+           txttelefono.setText(tabla.getValueAt(fila,4).toString());
+           txtpassword.setText(tabla.getValueAt(fila,5).toString());
+           txtcorreo.setText(tabla.getValueAt(fila,6).toString());
+    }
 
+    
+}
 
-protected void TextFields() {
+public void TextFields() {
 
     txtnombre = new JTextField();
     txtnombre.setBounds(150,350,200,30);
     txtnombre.setForeground(Color.gray);
     txtnombre.setFont(new Font("Courier New", 1, 14));
-add(txtnombre);
+
 
 
     
@@ -193,7 +235,7 @@ add(txtnombre);
     
     
 txtID = new JTextField();
-txtID.setEditable(false);
+//txtID.setEditable(false);
 txtID.setBounds(150,250,200,30);
 txtID.setForeground(Color.gray);
 txtID.setFont(new Font("Courier New", 1, 14));
@@ -215,7 +257,7 @@ txtapellido = new JTextField();
 txtapellido.setBounds(150,400,200,30);
 txtapellido.setForeground(Color.gray);
 txtapellido.setFont(new Font("Courier New", 1, 14));
-add(txtapellido);
+
 
 
 
@@ -225,19 +267,19 @@ txttelefono = new JTextField();
 txttelefono.setBounds(150,450,200,30);
 txttelefono.setForeground(Color.gray);
 txttelefono.setFont(new Font("Courier New", 1, 14));
-add(txttelefono);
+
 
 
 txtcorreo = new JTextField();
 txtcorreo.setBounds(150,550,200,30);
 txtcorreo.setForeground(Color.gray);
 txtcorreo.setFont(new Font("Courier New", 1, 14));
-add(txtcorreo);
+
 
 txtpassword = new JTextField();
 txtpassword.setBounds(150,500,200,30);
 txtpassword.setForeground(Color.gray);
-add(txtpassword);
+
 }
 
 public static void main(String[] args) {
@@ -290,15 +332,35 @@ public void limpiarCampos() {
     
 
    
-txtID.setText("");
-   txtnombreUsuario.setText("");
-   txtnombre.setText("");
-   txtapellido.setText("");
-   txttelefono.setText("");
-   txtpassword.setText("");
-   txtcorreo.setText("");
+txtID.setText(null);
+   txtnombreUsuario.setText(null);
+   txtnombre.setText(null);
+   txtapellido.setText(null);
+   txttelefono.setText(null);
+   txtpassword.setText(null);
+   txtcorreo.setText(null);
    
 
+}
+@Override
+public void mousePressed(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mouseReleased(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mouseEntered(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mouseExited(MouseEvent e) {
+	// TODO Auto-generated method stub
+	
 }
 
 }

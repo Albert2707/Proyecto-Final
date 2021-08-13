@@ -9,7 +9,7 @@ import java.awt.event.*;
 import java.sql.*;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
-public class Principal extends JFrame implements ActionListener{
+public class Principal extends JFrame implements metodos{
     private static Principal instance;
 
     private JScrollPane scroll;
@@ -30,12 +30,27 @@ public class Principal extends JFrame implements ActionListener{
 
 
 }
-protected void Botones() {
+
+public void Botones() {
     BotonCerrar = new JToggleButton("Cerrar sesion");
     BotonCerrar.setBounds(0,0,750,20);
     BotonCerrar.setForeground(new Color(255, 51, 51 ));
     BotonCerrar.setFont(new Font("Times New Roman", 1, 14));
-    BotonCerrar.addActionListener(this);
+    BotonCerrar.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+
+	        Login login =  Login.getInstance();
+	        login.setBounds(0,0,290,450);
+	        login.setVisible(true);
+	        login.setLocationRelativeTo(null);
+	        login.setResizable(false);
+	        setVisible(false);
+		}
+    	
+    });
     BotonCerrar.addMouseListener(new MouseListener() {
 
         @Override
@@ -87,7 +102,42 @@ protected void Botones() {
     botonModificar.setBounds(490,300,170,100);
     botonModificar.setForeground(new Color(255, 150, 51));
     botonModificar.setFont(new Font("Times New Roman", 1, 14));
-    botonModificar.addActionListener(this);
+    botonModificar.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+
+		    
+
+	        try {
+	            String ID = txtID.getText().trim();
+	            Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+
+	            PreparedStatement pasar=conectar.prepareStatement("Update Registro set NombreUsuario=?, Nombre=?,Apellido=?,Telefono=?,Contraseña=?,Correo=? where ID= " + ID);
+	            pasar.setString(1, txtnombreUsuario.getText().trim());
+	            pasar.setString(2, txtnombre.getText().trim());
+	            pasar.setString(3, txtapellido.getText().trim());
+	            pasar.setString(4, txttelefono.getText().trim());
+	            pasar.setString(5, txtpassword.getText().trim());
+	            pasar.setString(6, txtcorreo.getText().trim());
+
+	            pasar.executeUpdate();
+	            limpiarCampos();
+	            mostrar();
+
+
+
+	        
+
+	            
+	        } catch (SQLException ex) {
+	            
+
+
+	        }
+		}
+    	
+    });
     botonModificar.addMouseListener(new MouseListener() {
 
         @Override
@@ -139,7 +189,30 @@ protected void Botones() {
     botonEliminar.setBounds(490,500,170,100);
     botonEliminar.setForeground(new Color(255, 51, 51 ));
     botonEliminar.setFont(new Font("Times New Roman", 1, 14));
-    botonEliminar.addActionListener(this);
+    botonEliminar.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			try {
+			    String ID = txtID.getText().trim();
+			    Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+
+			    PreparedStatement pasar=conectar.prepareStatement(" delete from Registro where ID= " + ID);
+			        pasar.executeUpdate();
+			        mostrar();   
+			        limpiarCampos();
+
+			   
+			       
+
+			} catch (Exception e2) {
+			    // TODO: handle exception
+			}
+			    			// TODO Auto-generated method stub
+			
+		}
+    	
+    });
     botonEliminar.addMouseListener(new MouseListener() {
 
         @Override
@@ -178,262 +251,48 @@ protected void Botones() {
     });
     add(botonEliminar); 
     
+  
     
     
 }
-public void actionPerformed(ActionEvent e) {
-    if(e.getSource()==BotonCerrar) {
-        Login login =  Login.getInstance();
-        login.setBounds(0,0,290,450);
-        login.setVisible(true);
-        login.setLocationRelativeTo(null);
-        login.setResizable(false);
-        this.setVisible(false);
+
+
+private JTable getJTable() {
+    String[] colName = { "Name", "Email", "Contact No. 1", "Contact No. 2",
+            "Group", "" };
+    if (tabla == null) {
+        tabla = new JTable() {
+            public boolean isCellEditable(int nRow, int nCol) {
+                return false;
+            }
+        };
     }
-    if(e.getSource() ==botonModificar) {
-        try {
-            String ID = txtID.getText().trim();
-            Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
-
-            PreparedStatement pasar=conectar.prepareStatement("Update Registro set NombreUsuario=?, Nombre=?,Apellido=?,Telefono=?,Contraseña=?,Correo=? where ID= " + ID);
-            pasar.setString(1, txtnombreUsuario.getText().trim());
-            pasar.setString(2, txtnombre.getText().trim());
-            pasar.setString(3, txtapellido.getText().trim());
-            pasar.setString(4, txttelefono.getText().trim());
-            pasar.setString(5, txtpassword.getText().trim());
-            pasar.setString(6, txtcorreo.getText().trim());
-
-            pasar.executeUpdate();
-            limpiarCampos();
-            mostrar();
-
-
-
-        
-
-            
-        } catch (SQLException ex) {
-            
-
-
-        }
-    }
-    if(e.getSource() == botonEliminar) {
-try {
-    int fila=tabla.getSelectedRow();
-    String ID=tabla.getValueAt(fila,0).toString();
-    //String ID = txtID.getText().trim();
-    Connection  conectar = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
-
-    PreparedStatement pasar=conectar.prepareStatement(" delete from Registro where ID= " + ID);
-        pasar.executeUpdate();
-        mostrar();   
-        limpiarCampos();
-
-
-       
-
-    txtnombre.setForeground(Color.gray);
-    txtnombre.setFont(new Font("Courier New", 1, 14));
-    txtnombre.addFocusListener(new FocusListener() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            if (txtnombre.getText().equals("Nombre")) {
-                txtnombre.setText("");
-                txtnombre.setForeground(Color.black);
-            }
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-            if (txtnombre.getText().isEmpty()) {
-                txtnombre.setForeground(Color.GRAY);
-                txtnombre.setText("Nombre");
-            }
-            
-        }});
-
-
-
-    
-    
-
-
-    
-    
-
-   txtID.setEditable(false);
-
-   txtID.setForeground(Color.gray);
-   txtID.setFont(new Font("Courier New", 1, 14));
-   txtID.addFocusListener(new FocusListener() {
-       @Override
-       public void focusGained(FocusEvent e) {
-           if (txtID.getText().equals("ID")) {
-            txtID.setText("");
-            txtID.setForeground(Color.black);
-           }
-       }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-           if (txtID.getText().isEmpty()) {
-            txtID.setForeground(Color.GRAY);
-            txtID.setText("ID");
-           }
-        
-    }});
-
-
-
-
-    txtnombreUsuario.setForeground(Color.gray);
-    txtnombreUsuario.setFont(new Font("Courier New", 1, 14));
-    txtnombreUsuario.addFocusListener(new FocusListener() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            if (txtnombreUsuario.getText().equals("Usuario")) {
-             txtnombreUsuario.setText("");
-                txtnombreUsuario.setForeground(Color.black);
-            }
-        }
-
-        @Override
-        public void focusLost(FocusEvent e) {
-            if (txtnombreUsuario.getText().isEmpty()) {
-             txtnombreUsuario.setForeground(Color.GRAY);
-                txtnombreUsuario.setText("Usuario");
-            }
-            
-        }});
-
-    
-    
-    
-
-   txtapellido.setForeground(Color.gray);
-   txtapellido.setFont(new Font("Courier New", 1, 14));
-   txtapellido.addFocusListener(new FocusListener() {
-       @Override
-       public void focusGained(FocusEvent e) {
-           if (txtapellido.getText().equals("Apellido")) {
-            txtapellido.setText("");
-            txtapellido.setForeground(Color.black);
-           }
-       }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-           if (txtapellido.getText().isEmpty()) {
-            txtapellido.setForeground(Color.GRAY);
-            txtapellido.setText("Apellido");
-           }
-        
-    }});
-
-
-
-
-
-
-
-
-   txttelefono.setForeground(Color.gray);
-   txttelefono.setFont(new Font("Courier New", 1, 14));
-   txttelefono.addFocusListener(new FocusListener() {
-       @Override
-       public void focusGained(FocusEvent e) {
-           if (txttelefono.getText().equals("Telefono")) {
-            txttelefono.setText("");
-            txttelefono.setForeground(Color.black);
-           }
-       }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-           if (txttelefono.getText().isEmpty()) {
-            txttelefono.setForeground(Color.GRAY);
-            txttelefono.setText("Telefono");
-           }
-        
-    }});
-
-
-
-
-   txtcorreo.setForeground(Color.gray);
-   txtcorreo.setFont(new Font("Courier New", 1, 14));
-   txtcorreo.addFocusListener(new FocusListener() {
-       @Override
-       public void focusGained(FocusEvent e) {
-           if (txtcorreo.getText().equals("Correo")) {
-            txtcorreo.setText("");
-            txtcorreo.setForeground(Color.black);
-           }
-       }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-           if (txtcorreo.getText().isEmpty()) {
-            txtcorreo.setForeground(Color.GRAY);
-            txtcorreo.setText("Correo");
-           }
-        
-    }});
-
-
-   txtpassword.setForeground(Color.gray);
-   txtpassword.setFont(new Font("Courier New", 1, 14));
-   txtpassword.addFocusListener(new FocusListener() {
-       @Override
-       public void focusGained(FocusEvent e) {
-           if (txtpassword.getText().equals("Contraseña")) {
-            txtpassword.setText("");
-            txtpassword.setForeground(Color.black);
-           }
-       }
-
-    @Override
-    public void focusLost(FocusEvent e) {
-           if (txtpassword.getText().isEmpty()) {
-            txtpassword.setForeground(Color.GRAY);
-            txtpassword.setText("Contraseña");
-           }
-        
-    }});
-
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-
-} catch (Exception e2) {
-    // TODO: handle exception
+    DefaultTableModel contactTableModel = (DefaultTableModel) tabla
+            .getModel();
+    contactTableModel.setColumnIdentifiers(colName);
+    tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    return tabla;
 }
-    }
-    }
 
 
-
-protected void mostrar() {
+public void mostrar(){
 try {
 
 
    Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
 
     
-    DefaultTableModel modelo = new DefaultTableModel();
+  /*DefaultTableModel modelo = new DefaultTableModel() {
+       public boolean isCellEditable(int row, int column) {
+           //all cells false
+           return false;
+        }
+   };*/
+   
+   DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 
     
-    tabla = new JTable(modelo);
+    tabla = new JTable();
     tabla.setGridColor(Color.MAGENTA);
     scroll = new JScrollPane(tabla);
     scroll.setBounds(0,30,750,200);
@@ -446,7 +305,7 @@ try {
     modelo.addColumn("Telefono");
     modelo.addColumn("Contraseña");
     modelo.addColumn("Correo");
-    
+    tabla.setModel(modelo);
     Statement  set = cn.createStatement();
     ResultSet resultado = set.executeQuery("select * from Registro");
 
@@ -457,7 +316,13 @@ while(resultado.next()) {
         fila[i] = resultado.getObject( i + 1);
     }
     modelo.addRow(fila);
+    
 }
+//modelo.setRowCount(0);
+JTable.setModel(modelo);
+
+modelo.fireTableDataChanged();
+//tabla.repaint();
 cn.close();
 
 }
@@ -486,20 +351,13 @@ tabla.addMouseListener(new MouseAdapter() {
 
 
 
-protected void TextFields() {
+public void TextFields() {
 
     txtnombre = new JTextField();
     txtnombre.setBounds(150,350,200,30);
     txtnombre.setForeground(Color.gray);
     txtnombre.setFont(new Font("Courier New", 1, 14));
 add(txtnombre);
-
-
-    
-    
-
-
-    
     
 txtID = new JTextField();
 txtID.setEditable(false);
@@ -600,18 +458,17 @@ public void Labels() {
     add(correo);
     
 }
-
 public void limpiarCampos() {
     
 
    
-txtID.setText("");
-   txtnombreUsuario.setText("");
-   txtnombre.setText("");
-   txtapellido.setText("");
-   txttelefono.setText("");
-   txtpassword.setText("");
-   txtcorreo.setText("");
+txtID.setText(null);
+   txtnombreUsuario.setText(null);
+   txtnombre.setText(null);
+   txtapellido.setText(null);
+   txttelefono.setText(null);
+   txtpassword.setText(null);
+   txtcorreo.setText(null);
    
 
 }

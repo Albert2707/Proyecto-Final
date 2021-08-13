@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-public class Login extends JFrame {
+public class Login extends JFrame implements metodos{
 private JTextField nombreUsuario, focus;
 private JToggleButton botonAccerder, botonRegistro,verPassword,registro,ver;
 private JPasswordField password;
@@ -94,7 +94,9 @@ private Login() {
                 //para ejecutar lo que estmos mandando a la base de datos.
                 if(resultado.next()) {
                     getToolkit().beep();
+                    
                     Principal principal =  Principal.getInstance();
+                    principal.mostrar();
                     principal.setBounds(0,0,750,700);
                     principal.setLocationRelativeTo(null);
                     principal.setVisible(true);
@@ -397,6 +399,38 @@ public void limpiarCampos() {
             
             
         }});
+}
+
+
+
+@Override
+public void Botones() {
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+@Override
+public void mostrar() {
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+@Override
+public void TextFields() {
+	// TODO Auto-generated method stub
+	
+}
+
+
+
+@Override
+public void Labels() {
+	// TODO Auto-generated method stub
+	
 }
 }
 
