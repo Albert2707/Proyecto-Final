@@ -258,8 +258,8 @@ public void Botones() {
 
 
 private JTable getJTable() {
-    String[] colName = { "Name", "Email", "Contact No. 1", "Contact No. 2",
-            "Group", "" };
+    String[] colName = { "ID", "NombreUsuario", "Nomrbe", "Apellido",
+            "Telefono", "Contraseña","Correo" };
     if (tabla == null) {
         tabla = new JTable() {
             public boolean isCellEditable(int nRow, int nCol) {
@@ -267,8 +267,7 @@ private JTable getJTable() {
             }
         };
     }
-    DefaultTableModel contactTableModel = (DefaultTableModel) tabla
-            .getModel();
+    DefaultTableModel contactTableModel = (DefaultTableModel) tabla.getModel();
     contactTableModel.setColumnIdentifiers(colName);
     tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     return tabla;
@@ -276,6 +275,7 @@ private JTable getJTable() {
 
 
 public void mostrar(){
+	   DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
 try {
 
 
@@ -288,15 +288,7 @@ try {
            return false;
         }
    };*/
-   
-   DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-
-    
-    tabla = new JTable();
-    tabla.setGridColor(Color.MAGENTA);
-    scroll = new JScrollPane(tabla);
-    scroll.setBounds(0,30,750,200);
-    add(scroll);
+  
     
     modelo.addColumn("ID");
     modelo.addColumn("NombreUsuario");
@@ -318,11 +310,9 @@ while(resultado.next()) {
     modelo.addRow(fila);
     
 }
-//modelo.setRowCount(0);
-JTable.setModel(modelo);
 
+modelo.setRowCount(0);
 modelo.fireTableDataChanged();
-//tabla.repaint();
 cn.close();
 
 }
