@@ -4,5 +4,5 @@ public interface metodos {
     public void  mostrar();
     public void  TextFields();
     public void   Labels();
-	void limpiarCampos();
+	public void limpiarCampos();
 }

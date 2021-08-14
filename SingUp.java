@@ -8,7 +8,7 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
-public class SingUp extends JFrame implements ActionListener{
+public class SingUp extends JFrame implements metodos{
     private static SingUp instance;
 private JLabel password, confirmPassword,imagen;
 private JToggleButton registrarse,back;
@@ -18,120 +18,15 @@ private JToggleButton elpa;
 private SingUp() {
     setLayout(null);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
-    Jtextfields();
+    TextFields();
+    Botones();
 
 
-        
     
-
-    
-    ImageIcon iconolbl = new ImageIcon("src/imagenes/registro (1).png");
-    int  ancho1 =30;
-    int  alto1 = -1;
-    ImageIcon iconoEscala = new ImageIcon(iconolbl.getImage().getScaledInstance(ancho1, alto1, java.awt.Image.SCALE_DEFAULT));
-    imagen = new JLabel(iconoEscala);
-    imagen.setSize(30,50);
-    imagen.setLocation(90,400);
-    add(imagen);
-    elpa = new JToggleButton("Registrarme");
-    elpa.setHorizontalAlignment(SwingConstants.RIGHT) ;
-    elpa.setBounds(83,400, 140,50);
- 
-    elpa.addActionListener(this);
-    elpa.addMouseListener(new MouseListener() {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            // TODO Auto-generated method stub
-            elpa.setSize(160,50);
-            elpa.setLocation(83,400);
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            elpa.setSize(140,50);
-            elpa.setLocation(83,400);
-            
-        }
-        
-    });
-    add(elpa);
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    back = new JToggleButton("Back");
-    back.setBounds(0,0, 80,35);
-    back.addActionListener(this);
-    back.addMouseListener(new MouseListener() {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
-        }
-
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            // TODO Auto-generated method stub
-            back.setSize(90,40);
-            back.setLocation(0,0);
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            back.setSize(80,35);
-            back.setLocation(0,0);
-            
-        }
-        
-    });
-    add(back);
-    
+  
 }
-
-public void Jtextfields() {
+@Override
+public void TextFields() {
     text_nombre = new JTextField("Nombre");
     text_nombre.setBounds(65,40,180,30);
     text_nombre.setForeground(Color.gray);
@@ -267,17 +162,7 @@ public void Jtextfields() {
         }});
     add(text_telefono); 
     
-    
-    
-    
-    
-    
-    /*password = new JLabel("");
-    password.setBounds(69,290,100,30);
-    password.setForeground(Color.gray);
-    password.setFont(new Font("Courier New", 1, 14));
-    String pas  = password.getText();
-    //add(password);*/
+
     
     text_password = new JPasswordField("Contraseña");
     text_password.setBounds(65,290,180,30);
@@ -364,97 +249,6 @@ public void Jtextfields() {
 
     
 }
-
-public void actionPerformed(ActionEvent e) {
-
-    
-    String password = String.valueOf(text_password.getPassword());
-    String pass2 = String.valueOf(text_confirmPassword.getPassword());
-
-
-    String usuario1 =  text_nombreUsurio.getText().trim();
-    String nombre1 = text_nombre.getText().trim();
-    String apellido1 = text_apellido.getText().trim();
-    String telefono1 = text_telefono.getText().trim();
-    String correo1 = text_correo.getText().trim();
-
-boolean verificar=false;
-    for(int i =0;i<password.length();i++) {
-        for(int j=0;j<pass2.length();j++) {
-            if(password.charAt(i)==pass2.charAt(j)) {
-                verificar=true;
-            }
-        }
-            
-    }
-
-
-    
-    if(e.getSource() == elpa) {
-        if(nombre1.equals("Usuario")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Usuario\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-        }else if(usuario1.equals("Nombre")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Nombre\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-        }else if(apellido1.equals("Apellido")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Apellido\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-
-        }else if(correo1.equals("Telefono")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Telefono\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-
-        }else if(telefono1.equals("Contraseña")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-
-        }else if(password.equals("Correo")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Correo\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-
-        }else if(pass2.equals("Confirmar Contraseña")) {
-            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Confirmar contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-
-        }else if((nombre1.equals("Nombre"))&&(apellido1.equals("Apellido"))&&(telefono1.equals("Telefono"))&&(password.equals("Contraseña"))&&(correo1.equals("Correo"))&&(pass2.equals("Confirmar Contraseña"))) {
-            JOptionPane.showMessageDialog(null,"¡Favor completar todos los campos!","INFO",JOptionPane.INFORMATION_MESSAGE);
-        }
-                
-        else {
-
-            if((password.equals(pass2))) {
-            
-        try {
-        Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
-        PreparedStatement pst = cn.prepareStatement("insert into Registro values(?,?,?,?,?,?,?)");
-        
-        pst.setString(1,"0");
-        pst.setString(2,text_nombreUsurio.getText().trim());
-        pst.setString(3,text_nombre.getText().trim());
-        pst.setString(4,text_apellido.getText().trim());
-        pst.setString(5,text_telefono.getText().trim());
-        pst.setString(6,password.trim());
-        pst.setString(7,text_correo.getText().trim());
-        pst.executeUpdate();
-        limpiarCampos();
-        
-        JOptionPane.showMessageDialog(null,"Registrado","INFO",JOptionPane.INFORMATION_MESSAGE);
-        }catch(Exception e1) {
-            JOptionPane.showMessageDialog(null,"Error al registrar","INFO",JOptionPane.INFORMATION_MESSAGE);
-        }
-            
-        }
-            else{
-                JOptionPane.showMessageDialog(null,"Al parecer las Contraseñas no coinciden ","INFO",JOptionPane.INFORMATION_MESSAGE);
-
-            }
-        }
-        
-    }
-    if(e.getSource() == back) {
-        Login login =  Login.getInstance();
-        login.setBounds(0,0,290,450);
-        login.setVisible(true);
-        login.setLocationRelativeTo(null);
-        login.setResizable(false);
-        this.setVisible(false);
-    }
-    }
-
 
 public static SingUp getInstance() {
     if(Objects.isNull(instance)) {
@@ -672,6 +466,206 @@ public void limpiarCampos() {
         }});
 
     
+}
+
+@Override
+public void Botones() {
+	  
+    ImageIcon iconolbl = new ImageIcon("src/imagenes/registro (1).png");
+    int  ancho1 =30;
+    int  alto1 = -1;
+    ImageIcon iconoEscala = new ImageIcon(iconolbl.getImage().getScaledInstance(ancho1, alto1, java.awt.Image.SCALE_DEFAULT));
+    imagen = new JLabel(iconoEscala);
+    imagen.setSize(30,50);
+    imagen.setLocation(90,400);
+    add(imagen);
+    elpa = new JToggleButton("Registrarme");
+    elpa.setHorizontalAlignment(SwingConstants.RIGHT) ;
+    elpa.setBounds(83,400, 140,50);
+ 
+    elpa.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		    
+		    String password = String.valueOf(text_password.getPassword());
+		    String pass2 = String.valueOf(text_confirmPassword.getPassword());
+
+
+		    String usuario1 =  text_nombreUsurio.getText().trim();
+		    String nombre1 = text_nombre.getText().trim();
+		    String apellido1 = text_apellido.getText().trim();
+		    String telefono1 = text_telefono.getText().trim();
+		    String correo1 = text_correo.getText().trim();
+
+
+		    
+		    if(e.getSource() == elpa) {
+		        if(nombre1.equals("Usuario")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Usuario\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+		        }else if(usuario1.equals("Nombre")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Nombre\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+		        }else if(apellido1.equals("Apellido")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Apellido\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+		        }else if(correo1.equals("Telefono")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Telefono\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+		        }else if(telefono1.equals("Contraseña")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+		        }else if(password.equals("Correo")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Correo\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+		        }else if(pass2.equals("Confirmar Contraseña")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Confirmar contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+		        }else if((nombre1.equals("Nombre"))&&(apellido1.equals("Apellido"))&&(telefono1.equals("Telefono"))&&(password.equals("Contraseña"))&&(correo1.equals("Correo"))&&(pass2.equals("Confirmar Contraseña"))) {
+		            JOptionPane.showMessageDialog(null,"¡Favor completar todos los campos!","INFO",JOptionPane.INFORMATION_MESSAGE);
+		        }
+		                
+		        else {
+
+		            if((password.equals(pass2))) {
+		            
+		        try {
+		        Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+		        PreparedStatement pst = cn.prepareStatement("insert into Registro values(?,?,?,?,?,?,?)");
+		        
+		        pst.setString(1,"0");
+		        pst.setString(2,text_nombreUsurio.getText().trim());
+		        pst.setString(3,text_nombre.getText().trim());
+		        pst.setString(4,text_apellido.getText().trim());
+		        pst.setString(5,text_telefono.getText().trim());
+		        pst.setString(6,password.trim());
+		        pst.setString(7,text_correo.getText().trim());
+		        pst.executeUpdate();
+		        limpiarCampos();
+		        mostrar();
+		        
+		        JOptionPane.showMessageDialog(null,"Registrado","INFO",JOptionPane.INFORMATION_MESSAGE);
+		        }catch(Exception e1) {
+		            JOptionPane.showMessageDialog(null,"Error al registrar","INFO",JOptionPane.INFORMATION_MESSAGE);
+		        }
+		            
+		        }
+		            else{
+		                JOptionPane.showMessageDialog(null,"Al parecer las Contraseñas no coinciden ","INFO",JOptionPane.INFORMATION_MESSAGE);
+
+		            }
+		        }
+		    } 
+		    	
+		}
+    	
+    });
+    elpa.addMouseListener(new MouseListener() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            // TODO Auto-generated method stub
+            elpa.setSize(160,50);
+            elpa.setLocation(83,400);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            elpa.setSize(140,50);
+            elpa.setLocation(83,400);
+            
+        }
+        
+    });
+    add(elpa);
+    
+    
+    
+    
+    back = new JToggleButton("Back");
+    back.setBounds(0,0, 80,35);
+    back.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+	        Login login =  Login.getInstance();
+	        login.setBounds(0,0,290,450);
+	        login.setVisible(true);
+	        login.setLocationRelativeTo(null);
+	        login.setResizable(false);
+	        setVisible(false);			
+		}
+    	
+    });
+    back.addMouseListener(new MouseListener() {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mousePressed(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent e) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void mouseEntered(MouseEvent e) {
+            // TODO Auto-generated method stub
+            back.setSize(90,40);
+            back.setLocation(0,0);
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+            back.setSize(80,35);
+            back.setLocation(0,0);
+            
+        }
+        
+    });
+    add(back);
+    
+	
+}
+
+@Override
+public void mostrar() {
+Principal mostrar = Principal.getInstance()	;
+mostrar.mostrar();
+}
+
+
+
+@Override
+public void Labels() {
+	// TODO Auto-generated method stub
+	
 }
 
 

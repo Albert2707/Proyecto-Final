@@ -3,9 +3,12 @@
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.sql.*;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
@@ -14,10 +17,11 @@ public class Principal extends JFrame implements metodos{
 
     private JScrollPane scroll;
     private JTextField txtnombre,txt_buscar, txtnombreUsuario, txtapellido, txttelefono, txtcorreo, txtpassword, txtID;
-    private JTable tabla;
+    private JTable tabla,tabla2;
     private String user_update;
-    private JLabel nombre, lID,nombreUsuario, apellido, telefono, correo, password, aviso;
-    private JToggleButton botonModificar, botonEliminar, BotonCerrar;
+    private JLabel nombre, lID,nombreUsuario, apellido, telefono, correo, password, aviso,actua;
+    private JToggleButton botonModificar, botonEliminar, BotonCerrar, actualizar;
+    private DefaultTableModel modelo;
     
     private Principal() {
     setTitle("DATOS");
@@ -32,9 +36,72 @@ public class Principal extends JFrame implements metodos{
 }
 
 public void Botones() {
-    BotonCerrar = new JToggleButton("Cerrar sesion");
-    BotonCerrar.setBounds(0,0,750,20);
+	
+	ImageIcon actu = new ImageIcon("src/imagenes/actualizar (1).png");
+    ImageIcon iconoEscala3 = new ImageIcon(actu.getImage().getScaledInstance(50, -1, java.awt.Image.SCALE_DEFAULT));
+
+	actua = new JLabel(iconoEscala3);
+	actua.setBounds(470,350,100,100);
+	add(actua);
+	actualizar = new JToggleButton("ACTUALIZAR");
+	actualizar.setHorizontalAlignment(SwingConstants.RIGHT);
+	actualizar.setForeground(new Color(255, 150, 51));
+	actualizar.setFont(new Font("Times New Roman", 1, 14));
+	actualizar.setBounds(490,350,170,100);
+	actualizar.addActionListener(new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+mostrar();			
+		}
+		
+	});
+	actualizar.addMouseListener(new MouseListener() {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public void mouseEntered(MouseEvent e) {
+actualizar.setBounds(490,350,190,100);			
+		}
+
+		@Override
+		public void mouseExited(MouseEvent e) {
+			actualizar.setBounds(490,350,170,100);
+			
+		}
+		
+	});
+	add(actualizar);
+	
+	
+	
+	ImageIcon salir = new ImageIcon("src/imagenes/puerta-de-salida (1).png");
+    ImageIcon iconoEscala4 = new ImageIcon(salir.getImage().getScaledInstance(70, -1, java.awt.Image.SCALE_DEFAULT));
+JLabel exit =new JLabel(iconoEscala4);
+exit.setBounds(430,550,170,100);
+add(exit);
+    BotonCerrar = new JToggleButton("CERRAR SESION");
+    BotonCerrar.setBounds(465,550,220,100);
     BotonCerrar.setForeground(new Color(255, 51, 51 ));
+    BotonCerrar.setHorizontalAlignment(SwingConstants.RIGHT);
+
     BotonCerrar.setFont(new Font("Times New Roman", 1, 14));
     BotonCerrar.addActionListener(new ActionListener() {
 
@@ -74,16 +141,14 @@ public void Botones() {
         @Override
         public void mouseEntered(MouseEvent e) {
             // TODO Auto-generated method stub
-            BotonCerrar.setSize(750,35);
-            BotonCerrar.setLocation(0,0);
-            BotonCerrar.setForeground(new Color(255, 51, 51 ));
-            BotonCerrar.setFont(new Font("Times New Roman", 1, 14));
+
+            BotonCerrar.setBounds(465,550,240,100);
+
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-            BotonCerrar.setSize(750,20);
-            BotonCerrar.setLocation(0,0);
+        	 BotonCerrar.setBounds(465,550,220,100);
             
         }
         
@@ -91,15 +156,15 @@ public void Botones() {
     add(BotonCerrar);
     
     ImageIcon iconolbl = new ImageIcon("src/imagenes/editar (2).png");
-    int  ancho1 =70;
+    int  ancho1 =50;
     int  alto1 = -1;
     ImageIcon iconoEscala = new ImageIcon(iconolbl.getImage().getScaledInstance(ancho1, alto1, java.awt.Image.SCALE_DEFAULT));
     JLabel imagen3 = new JLabel(iconoEscala);
-    imagen3.setBounds(480,300,100,100);
+    imagen3.setBounds(480,250,100,100);
     add(imagen3);
     botonModificar = new JToggleButton("MODIFICAR");
     botonModificar.setHorizontalAlignment(SwingConstants.RIGHT);
-    botonModificar.setBounds(490,300,170,100);
+    botonModificar.setBounds(490,250,170,100);
     botonModificar.setForeground(new Color(255, 150, 51));
     botonModificar.setFont(new Font("Times New Roman", 1, 14));
     botonModificar.addActionListener(new ActionListener() {
@@ -122,8 +187,9 @@ public void Botones() {
 	            pasar.setString(6, txtcorreo.getText().trim());
 
 	            pasar.executeUpdate();
+
+	           mostrar();
 	            limpiarCampos();
-	            mostrar();
 
 
 
@@ -161,15 +227,13 @@ public void Botones() {
         @Override
         public void mouseEntered(MouseEvent e) {
             //TODO Auto-generated method stub
-           botonModificar.setSize(190,100);
-           botonModificar.setLocation(490,300);
+            botonModificar.setBounds(490,250,190,100);
 
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-          botonModificar.setSize(170,100);
-           botonModificar.setLocation(490,300);
+            botonModificar.setBounds(490,250,170,100);
             
         }
         
@@ -178,15 +242,15 @@ public void Botones() {
     
     
     ImageIcon iconol = new ImageIcon("src/imagenes/eliminar (1).png");
-   int  ancho =70;
+   int  ancho =50;
    int  alto = -1;
     ImageIcon iconoEscala1 = new ImageIcon(iconol.getImage().getScaledInstance(ancho, alto, java.awt.Image.SCALE_DEFAULT));
     JLabel imagen2 = new JLabel(iconoEscala1);
-    imagen2.setBounds(480,500,100,100);
+    imagen2.setBounds(480,450,100,100);
     add(imagen2);
     botonEliminar = new JToggleButton("ELIMINAR");
     botonEliminar.setHorizontalAlignment(SwingConstants.RIGHT) ;
-    botonEliminar.setBounds(490,500,170,100);
+    botonEliminar.setBounds(490,450,170,100);
     botonEliminar.setForeground(new Color(255, 51, 51 ));
     botonEliminar.setFont(new Font("Times New Roman", 1, 14));
     botonEliminar.addActionListener(new ActionListener() {
@@ -199,7 +263,7 @@ public void Botones() {
 
 			    PreparedStatement pasar=conectar.prepareStatement(" delete from Registro where ID= " + ID);
 			        pasar.executeUpdate();
-			        mostrar();   
+			        mostrar();   		   
 			        limpiarCampos();
 
 			   
@@ -236,15 +300,14 @@ public void Botones() {
         @Override
         public void mouseEntered(MouseEvent e) {
             // TODO Auto-generated method stub
-           botonEliminar.setSize(190,100);
-           botonEliminar.setLocation(490,500);
+            botonEliminar.setBounds(490,450,190,100);
 
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-           botonEliminar.setSize(170,100);
-            botonEliminar.setLocation(490,500);
+            botonEliminar.setBounds(490,450,170,100);
+
             
         }
         
@@ -257,39 +320,25 @@ public void Botones() {
 }
 
 
-private JTable getJTable() {
-    String[] colName = { "ID", "NombreUsuario", "Nomrbe", "Apellido",
-            "Telefono", "Contraseña","Correo" };
-    if (tabla == null) {
-        tabla = new JTable() {
-            public boolean isCellEditable(int nRow, int nCol) {
-                return false;
-            }
-        };
-    }
-    DefaultTableModel contactTableModel = (DefaultTableModel) tabla.getModel();
-    contactTableModel.setColumnIdentifiers(colName);
-    tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    return tabla;
-}
-
 
 public void mostrar(){
-	   DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-try {
-
-
-   Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+     modelo = new DefaultTableModel() {
+        public boolean isCellEditable(int row, int column) {
+            //all cells false
+            return false;
+         }
+    };
 
     
-  /*DefaultTableModel modelo = new DefaultTableModel() {
-       public boolean isCellEditable(int row, int column) {
-           //all cells false
-           return false;
-        }
-   };*/
-  
-    
+    tabla = new JTable();
+    tabla.setGridColor(Color.LIGHT_GRAY);
+    tabla.setForeground(new Color(255, 51, 51));
+
+
+    scroll = new JScrollPane();
+    scroll.setViewportView(tabla);
+    scroll.setBounds(0,30,750,200);
+    add(scroll);
     modelo.addColumn("ID");
     modelo.addColumn("NombreUsuario");
     modelo.addColumn("Nombre");
@@ -297,36 +346,44 @@ try {
     modelo.addColumn("Telefono");
     modelo.addColumn("Contraseña");
     modelo.addColumn("Correo");
-    tabla.setModel(modelo);
-    Statement  set = cn.createStatement();
-    ResultSet resultado = set.executeQuery("select * from Registro");
+try {
 
 
-while(resultado.next()) {
-    Object [] fila = new Object[7];
-    for(int i = 0;i<7;i++) {
-        fila[i] = resultado.getObject( i + 1);
-    }
-    modelo.addRow(fila);
+   Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
+
     
+
+   PreparedStatement set = cn.prepareStatement("select * from Registro"); 
+    ResultSet r=set.executeQuery();
+    String fila[]=new String[7];
+    while(r.next()){
+    fila[0]=r.getString(1);
+    fila[1]=r.getString(2);
+    fila[2]=r.getString(3);
+    fila[3]=r.getString(4);
+    fila[4]=r.getString(5);
+    fila[5]=r.getString(6);
+    fila[6]=r.getString(7);
+
+    modelo.addRow(fila);
+    }
+tabla.setModel(modelo);
 }
-
-modelo.setRowCount(0);
-modelo.fireTableDataChanged();
-cn.close();
-
-}
-
 
 catch(SQLException e) {
     JOptionPane.showMessageDialog(null,"Error al mostrar los datos","INFO",JOptionPane.INFORMATION_MESSAGE);
 }
-tabla.addMouseListener(new MouseAdapter() {
+tabla.addMouseListener(new MouseListener() {
     @Override
     public void mouseClicked(MouseEvent e) {
     int fila = tabla.rowAtPoint(e.getPoint());
+    
+
 
     if(fila >-1) {
+        tabla.setModel(modelo);
+        modelo.fireTableDataChanged();
+        tabla.repaint();
         txtID.setText(tabla.getValueAt(fila,0).toString());
         txtnombreUsuario.setText(tabla.getValueAt(fila,1).toString());
          txtnombre.setText(tabla.getValueAt(fila,2).toString());
@@ -336,6 +393,30 @@ tabla.addMouseListener(new MouseAdapter() {
            txtcorreo.setText(tabla.getValueAt(fila,6).toString());
     }
     }
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 });
 }
 
@@ -403,13 +484,8 @@ public static Principal getInstance() {
     }
     return instance;
 }
-public static void main(String[] args) {
-    Principal principal =  Principal.getInstance();
-    principal.setBounds(0,0,750,700);
-    principal.setLocationRelativeTo(null);
-    principal.setVisible(true);
-    principal.setResizable(false);
-}
+
+
 public void Labels() {
 
     aviso = new JLabel();
