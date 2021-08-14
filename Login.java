@@ -137,6 +137,8 @@ public void Botones() {
 	            if(e.getSource() == botonAccerder) {
 	                if((textoUsuario.equals("Nombre Usuario")||(password2.equals("Contraseña")))) {
 	                     JOptionPane.showMessageDialog(null,"Debe ingresar su usuario y contraseña, si no está registrado debe registrarse","¡Importante!", JOptionPane.INFORMATION_MESSAGE);
+		                    error.setForeground(new Color(104, 255, 51));
+
 	                }else {
 	            try {
 	                Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
