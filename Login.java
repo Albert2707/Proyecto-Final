@@ -1,4 +1,6 @@
-
+//Albert Joan Agramonte Suero
+//Matricula.2020-10652
+//Patron de diseño singleton
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.Connection;

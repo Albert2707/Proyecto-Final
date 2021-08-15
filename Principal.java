@@ -1,5 +1,7 @@
 
-
+//Albert Joan Agramonte Suero
+//Matricula.2020-10652
+//Patron de diseño singleton
 
 import javax.swing.*;
 import javax.swing.border.Border;

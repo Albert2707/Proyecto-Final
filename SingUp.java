@@ -1,4 +1,6 @@
-
+//Albert Joan Agramonte Suero
+//Matricula.2020-10652
+//Patron de diseño singleton
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Objects;
@@ -11,10 +13,9 @@ import java.sql.*;
 public class SingUp extends JFrame implements metodos{
     private static SingUp instance;
 private JLabel password, confirmPassword,imagen;
-private JToggleButton registrarse,back;
 private JTextField text_nombre, text_nombreUsurio, text_apellido, text_correo, text_telefono;
 private JPasswordField text_password, text_confirmPassword;
-private JToggleButton elpa;
+private JToggleButton elpa,back;
 private SingUp() {
     setLayout(null);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -605,6 +606,7 @@ public void Botones() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			limpiarCampos();
 	        Login login =  Login.getInstance();
 	        login.setBounds(0,0,290,450);
 	        login.setVisible(true);
