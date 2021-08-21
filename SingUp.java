@@ -551,6 +551,12 @@ public void Botones() {
 		        pst.setString(6,text_correo.getText().trim());
 		        pst.setString(7,password.trim());
 		        pst.executeUpdate();
+		        Login login =  Login.getInstance();
+		        login.setBounds(0,0,290,450);
+		        login.setVisible(true);
+		        login.setLocationRelativeTo(null);
+		        login.setResizable(false);
+		        setVisible(false);
 		        limpiarCampos();
 		        
 		        JOptionPane.showMessageDialog(null,"Registrado","INFO",JOptionPane.INFORMATION_MESSAGE);
