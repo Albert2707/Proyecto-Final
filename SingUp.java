@@ -1,12 +1,17 @@
 //Albert Joan Agramonte Suero
 //Matricula.2020-10652
 //Patron de diseño singleton
+//Polimorfismo en cada notacion @Override
+//Herencia, encapsulamiento, abstracion.
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.util.Objects;
 import java.sql.Connection;
 import javax.swing.*;
 import javax.swing.border.Border;
+
+import Desvanecimiento.Desvanecimiento;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
@@ -16,11 +21,16 @@ private JLabel password, confirmPassword,imagen;
 private JTextField text_nombre, text_nombreUsurio, text_apellido, text_correo, text_telefono;
 private JPasswordField text_password, text_confirmPassword;
 private JToggleButton elpa,back;
+private Desvanecimiento efecto;
 private SingUp() {
     setLayout(null);
     setDefaultCloseOperation(EXIT_ON_CLOSE);
     TextFields();
     Botones();
+    setUndecorated(true);
+    getContentPane().setBackground(new Color(174, 214, 241));
+    efecto = new Desvanecimiento();
+    efecto.Abrir(this, 20);
 
 
     
@@ -502,20 +512,20 @@ public void Botones() {
 
 		    
 		    if(e.getSource() == elpa) {
-		        if(nombre1.equals("Usuario")) {
-		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Usuario\"","INFO",JOptionPane.INFORMATION_MESSAGE);
-		        }else if(usuario1.equals("Nombre")) {
+		        if(nombre1.equals("Nombre")) {
 		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Nombre\"","INFO",JOptionPane.INFORMATION_MESSAGE);
+		        }else if(usuario1.equals("Usuario")) {
+		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Usuario\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 		        }else if(apellido1.equals("Apellido")) {
 		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Apellido\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		        }else if(correo1.equals("Telefono")) {
+		        }else if(telefono1.equals("Telefono")) {
 		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Telefono\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		        }else if(telefono1.equals("Contraseña")) {
+		        }else if(password.equals("Contraseña")) {
 		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Contraseña\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
-		        }else if(password.equals("Correo")) {
+		        }else if(correo1.equals("Correo")) {
 		            JOptionPane.showMessageDialog(null,"Favor llenar el campo de \"Correo\"","INFO",JOptionPane.INFORMATION_MESSAGE);
 
 		        }else if(pass2.equals("Confirmar Contraseña")) {
@@ -530,19 +540,18 @@ public void Botones() {
 		            if((password.equals(pass2))) {
 		            
 		        try {
-		        Connection cn = DriverManager.getConnection("jdbc:mysql://localhost/Login","root","");
-		        PreparedStatement pst = cn.prepareStatement("insert into Registro values(?,?,?,?,?,?,?)");
+	               Connection cn = DriverManager.getConnection("jdbc:mysql://localhost:3306/almacenitlafinal?useSSL=false","root","albert2707");
+		        PreparedStatement pst = cn.prepareStatement("insert into usuarios values(?,?,?,?,?,?,?)");
 		        
 		        pst.setString(1,"0");
 		        pst.setString(2,text_nombreUsurio.getText().trim());
 		        pst.setString(3,text_nombre.getText().trim());
 		        pst.setString(4,text_apellido.getText().trim());
 		        pst.setString(5,text_telefono.getText().trim());
-		        pst.setString(6,password.trim());
-		        pst.setString(7,text_correo.getText().trim());
+		        pst.setString(6,text_correo.getText().trim());
+		        pst.setString(7,password.trim());
 		        pst.executeUpdate();
 		        limpiarCampos();
-		        mostrar();
 		        
 		        JOptionPane.showMessageDialog(null,"Registrado","INFO",JOptionPane.INFORMATION_MESSAGE);
 		        }catch(Exception e1) {
@@ -616,12 +625,11 @@ public void Botones() {
 		}
     	
     });
-    back.addMouseListener(new MouseListener() {
+    back.addMouseListener(new MouseAdapter() {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            // TODO Auto-generated method stub
-            
+        	
         }
 
         @Override
@@ -656,16 +664,17 @@ public void Botones() {
 	
 }
 
-@Override
-public void mostrar() {
-Principal mostrar = Principal.getInstance()	;
-mostrar.mostrar();
+public void oculta(ActionEvent e) {
+	efecto.Ocultar(this, 20);
 }
-
-
 
 @Override
 public void Labels() {
+	// TODO Auto-generated method stub
+	
+}
+@Override
+public void mostrar() {
 	// TODO Auto-generated method stub
 	
 }
